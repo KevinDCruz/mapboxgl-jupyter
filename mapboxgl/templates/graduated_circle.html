@@ -10,7 +10,9 @@ var map = new mapboxgl.Map({
     zoom: {{ zoom }}
 });
     
+{% if colorStops and colorProperty %}
 calcCircleColorLegend({{ colorStops }}, "{{ colorProperty }} vs. {{ radiusProperty }}");
+{% endif %}
 
 map.on('load', function() {
     
@@ -44,12 +46,17 @@ map.on('load', function() {
         "source": "data",
         "type": "circle",
         "paint": {
+            {% if colorProperty and colorStops %}
             "circle-color": {
+                "type": "{{ colorType }}",
                 // Data property to style color by from python variable
                 "property": "{{ colorProperty }}",
                 // Color stops array to use based on data values from python variable
                 "stops": {{ colorStops }}
             },
+            {% else %}
+            "circle-color": "grey",
+            {% endif %}
             "circle-radius" : {
                 // Data property to style radius by from python variable
                 "property": "{{ radiusProperty }}",
@@ -59,7 +66,8 @@ map.on('load', function() {
             "circle-stroke-color": "grey",
             "circle-stroke-width": {
                 "stops": [[0,0.01], [18,1]]
-            }
+            },
+            "circle-opacity": {{ opacity }}
         }
     }, "label");
     
