@@ -8,7 +8,7 @@ def df_to_geojson(df, properties=None, lat='lat', lon='lon', precision=None):
         df[lat] = df[lat].round(precision)
         df[lon] = df[lon].round(precision)
 
-    if not properties:
+    if properties is None: # allow empty properties list
         properties = list(df.columns)
 
     for _, row in df.iterrows():
