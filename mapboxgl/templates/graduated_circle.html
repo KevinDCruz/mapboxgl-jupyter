@@ -19,7 +19,7 @@ map.on('load', function() {
 
     map.addSource("data", {
         "type": "geojson",
-        "data": {{ geojson_data }}, //data from dataframe output to geojson
+        "data": {{ geojson_data|tojson }}, //data from dataframe output to geojson
         "buffer": 1,
         "maxzoom": 14
     });

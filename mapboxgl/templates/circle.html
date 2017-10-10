@@ -18,7 +18,7 @@ map.on('load', function() {
     
     map.addSource("data", {
         "type": "geojson",
-        "data": {{ geojson_data }},
+        "data": {{ geojson_data|tojson }},
         "buffer": 1,
         "maxzoom": 14
     });

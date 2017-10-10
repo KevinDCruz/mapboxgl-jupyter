@@ -1,4 +1,3 @@
-import json
 import os
 
 from IPython.core.display import HTML, display
@@ -89,7 +88,7 @@ class CircleViz(object):
             styleUrl=self.style_url,
             center=list(self.center),
             zoom=self.zoom,
-            geojson_data=json.dumps(self.data, ensure_ascii=False),
+            geojson_data=self.data,
             colorProperty=self.color_property,
             colorStops=self.color_stops,
             colorType=self.color_type,
@@ -190,7 +189,7 @@ class GraduatedCircleViz(object):
             styleUrl=self.style_url,
             center=list(self.center),
             zoom=self.zoom,
-            geojson_data=json.dumps(self.data, ensure_ascii=False),
+            geojson_data=self.data,
             colorProperty=self.color_property,
             colorStops=self.color_stops,
             colorType=self.color_type,

@@ -1,31 +1,24 @@
+import geojson
 
 def df_to_geojson(df, properties=None, lat='lat', lon='lon', precision=None):
     """Serialize a Pandas dataframe to a geojson format Python dictionary
     """
-    geojson = {'type': 'FeatureCollection', 'features': []}
-
+    lat = df[lat]
+    lon = df[lon]
     if precision:
-        df[lat] = df[lat].round(precision)
-        df[lon] = df[lon].round(precision)
+        lat = lat.round(precision)
+        lon = lon.round(precision)
 
     if properties is None: # allow empty properties list
         properties = list(df.columns)
 
-    for _, row in df.iterrows():
-        feature = {
-            'type': 'Feature',
-            'properties': {},
-            'geometry': {
-                'type': 'Point',
-                'coordinates': [row[lon], row[lat]]}}
-
-        # TODO performance
-        for prop in properties:
-            feature['properties'][prop] = row[prop]
-
-        geojson['features'].append(feature)
-
-    return geojson
+    features = []
+    for idx, row in df.iterrows():
+        f = geojson.Feature(geometry=geojson.Point((lon[idx],lat[idx])),
+                            properties={prop: row[prop] for prop in properties})
+        features.append(f)
+    fc = geojson.FeatureCollection(features)
+    return fc
 
 def scale_between(minval, maxval, numStops):
     """ Scale a min and max value to equal interval domain with 
